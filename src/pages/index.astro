@@ -1,11 +1,54 @@
 ---
-import Welcome from '../components/Welcome.astro';
-import Layout from '../layouts/Layout.astro';
+import Layout from "../layouts/Layout.astro";
+import MemberCard from "../components/membercard.astro";
 
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+const curl =
+  "https://umdzzuqjrnkpgyjshzyp.supabase.co/rest/v1/MinLilleKlub?select=*";
+const apikey =
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVtZHp6dXFqcm5rcGd5anNoenlwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDQyNjg2NjUsImV4cCI6MjA1OTg0NDY2NX0.6cSmLNPviMqv8BdlTo6ceDpvg3qE8rUoZnz8pdvIufo";
+
+const options = {
+  headers: { apikey: apikey },
+};
+
+const data = await fetch(curl, options).then((response) => response.json());
+console.log(data);
 ---
 
 <Layout>
-	<Welcome />
+  <h1>Min Lille Klub</h1>
+  <div class="article-container">
+    {data.map((MinLilleKlub) => <MemberCard {MinLilleKlub} />)}
+  </div>
 </Layout>
+
+<style>
+  /* General reset */
+  body {
+    margin: 0;
+    font-family: Georgia, "Times New Roman", Times, serif;
+    background-color: #f0f0f0;
+    color: #333;
+  }
+
+  /* Header styling */
+  h1 {
+    text-align: center;
+    background-color: #333333;
+    color: white;
+    padding: 2rem 0;
+    font-size: 3rem;
+    font-weight: bold;
+    margin: 0;
+  }
+
+  /* Layout for articles */
+  .article-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 3vw;
+    padding: 3vw;
+    max-width: 1200px;
+    margin: 2rem auto;
+  }
+</style>
